@@ -1,0 +1,20 @@
+Discussion 26 septembre 2016
+TODO serveur
+- Kickout personnes qui ont planté
+	- pour l'instant plante l'appli
+	si timeout
+	- si les personnes sortent proprement ça fonctionne
+- Joueurs artificiels
+	- PNJ: ajouter côté serveur
+	- pl
+- TODO: gestion entrée sortie
+	- gestion sortie sale des joueurs par TCP timeout
+	- entrée et sortie joueurs uniquement en TCP
+	- deux sockets UDP (on peut simplifier)
+
+- Meilleure organisation client/serveur:
+	- entrée sortie client/serveur uniquement en TCP
+	- pas de broadcast des nouveaux
+	- serveur broadcast liste id,positions
+	- chaque joueur affiche ce qu'il reçoit
+	
