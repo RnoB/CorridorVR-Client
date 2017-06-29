@@ -5,10 +5,18 @@ using System.Collections.Generic;
 public class MeshGeneratorHardEdge1 : MonoBehaviour {
 
     public List<Vector3> newVertices = new List<Vector3>();
+    public List<Vector2> verticesUV = new List<Vector2>();
+
+    public List<Vector2> uvMap = new List<Vector2>();
+
     public List<int> newTriangles = new List<int>();
     public List<float> xGrid = new List<float>();
     public List<float> yGrid = new List<float>();
     public List<float> zGrid = new List<float>();
+
+    public List<float> xUV = new List<float>();
+    public List<float> yUV = new List<float>();
+
 
     public GameObject board1;
     public GameObject board2;
@@ -27,13 +35,13 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
     float Ltot;
     int Nv;
     public bool ceiling;
-    public bool light;
+    public bool lighted;
     GameObject[] pointLights = new GameObject[8];
     Light[] pointLightsComp = new Light[8];
     // Use this for initialization
     void Start() {
         ceiling = false;
-        light = false;
+        lighted = false;
         Nv = 0;
         mesh = GetComponent<MeshFilter>().mesh;
         A1 = PlayerPrefs.GetFloat("Aco");
@@ -65,13 +73,18 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         zGrid.Clear();
         simpleCorridor(2);
         mesh.Clear();
+
+
+
         mesh.vertices = newVertices.ToArray();
         mesh.triangles = newTriangles.ToArray();
-        
+        Debug.Log("triagnles vertices : " + newVertices.Count + " uv vertices : "+ verticesUV.Count);
+        mesh.uv = verticesUV.ToArray();
+
         mesh.RecalculateNormals();
 
         GetComponent<MeshCollider>().sharedMesh=mesh;
-        if (light)
+        if (lighted)
         {
             for (int k = 0; k < pointLights.Length; k++)
             {
@@ -104,26 +117,26 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
 
 
             }
-        }
-        int j = -1;
-        float wa = Ltot / 4;
-        j++;
-        pointLights[j].transform.position = new Vector3(Wbi, W / 2, + Ltot / 2 - wa);
-        j++;
-        pointLights[j].transform.position = new Vector3(-Wbi, W / 2, + Ltot / 2 - wa);
-        j++;
-        pointLights[j].transform.position = new Vector3(0, W/2, 0);
-        j++;
-        pointLights[j].transform.position = new Vector3(Wbi, W / 2, -Ltot / 2 - wa);
-        j++;
-        pointLights[j].transform.position = new Vector3(-Wbi, W / 2, -Ltot / 2 - wa);
-        j++;
-        pointLights[j].transform.position = new Vector3(0, W / 2, -Ltot);
-        j++;
-        pointLights[j].transform.position = new Vector3(Wbi, W / 2, -3*Ltot / 2 - wa);
-        j++;
-        pointLights[j].transform.position = new Vector3(-Wbi, W / 2, -3*Ltot / 2 - wa);
 
+            int j = -1;
+            float wa = Ltot / 4;
+            j++;
+            pointLights[j].transform.position = new Vector3(Wbi, W / 2, +Ltot / 2 - wa);
+            j++;
+            pointLights[j].transform.position = new Vector3(-Wbi, W / 2, +Ltot / 2 - wa);
+            j++;
+            pointLights[j].transform.position = new Vector3(0, W / 2, 0);
+            j++;
+            pointLights[j].transform.position = new Vector3(Wbi, W / 2, -Ltot / 2 - wa);
+            j++;
+            pointLights[j].transform.position = new Vector3(-Wbi, W / 2, -Ltot / 2 - wa);
+            j++;
+            pointLights[j].transform.position = new Vector3(0, W / 2, -Ltot);
+            j++;
+            pointLights[j].transform.position = new Vector3(Wbi, W / 2, -3 * Ltot / 2 - wa);
+            j++;
+            pointLights[j].transform.position = new Vector3(-Wbi, W / 2, -3 * Ltot / 2 - wa);
+        }
         board1.transform.position = new Vector3(0, H/2, Len-Ltot);
         board2.transform.position = new Vector3(0, H/2, Len);
     }
@@ -158,6 +171,11 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         newTriangles.Add(idx[0]);
         newTriangles.Add(idx[1]);
         newTriangles.Add(idx[2]);
+
+
+        uvMap.Add(verticesUV[x0]);
+        uvMap.Add(verticesUV[x1]);
+        uvMap.Add(verticesUV[x2]);
     }
     void quad(int x0, int x1, int x2, int x3,int pos)
     {
@@ -189,6 +207,13 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         newTriangles.Add(idx[1]);
         newTriangles.Add(idx[2]);
         newTriangles.Add(idx[3]);
+
+        uvMap.Add(verticesUV[x0]);
+        uvMap.Add(verticesUV[x1]);
+        uvMap.Add(verticesUV[x3]);
+        uvMap.Add(verticesUV[x1]);
+        uvMap.Add(verticesUV[x2]);
+        uvMap.Add(verticesUV[x3]);
     }
 
     void quad2(int x0, int x1, int x2, int x3, int pos)
@@ -202,6 +227,7 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         for (int k=0;k<4;k++)
         {
             newVertices.Add(newVertices[idx[k]]);
+            verticesUV.Add(verticesUV[idx[k]]);
         }
         int N = newVertices.Count;
 
@@ -211,12 +237,23 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         newTriangles.Add(N - 3);
         newTriangles.Add(N - 2);
         newTriangles.Add(N - 1);
-        
+
+        uvMap.Add(verticesUV[x0]);
+        uvMap.Add(verticesUV[x1]);
+        uvMap.Add(verticesUV[x3]);
+        uvMap.Add(verticesUV[x1]);
+        uvMap.Add(verticesUV[x2]);
+        uvMap.Add(verticesUV[x3]);
+
+
 
     }
 
     void simpleCorridor(int pos)
     {
+        // ----- Position of the vertices
+
+        // Possible x Coordinates
         float z0 = -pos * Ltot;
         xGrid.Add(-W / 2 - Wbi);
         xGrid.Add(-W / 2 - Wbi + W);
@@ -226,11 +263,11 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         xGrid.Add(+W / 2 + Wbi - W);
         xGrid.Add(+W / 2 + Wbi);
 
-
+        // Possible y Coordinates (upwards)
         yGrid.Add(0);
         yGrid.Add(H);
 
-
+        // Possible z Coordinates
         zGrid.Add(Len + Lex + Lco +  Wbi / Mathf.Tan(A) + Wbi / Mathf.Tan(A1) + z0);
         zGrid.Add(Lex + Lco +  Wbi / Mathf.Tan(A) + Wbi / Mathf.Tan(A1) + z0);
         zGrid.Add(-Lbi + Lex + Lco +  Wbi / Mathf.Tan(A) + Wbi / Mathf.Tan(A1) + z0);
@@ -244,6 +281,30 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         zGrid.Add(zGrid[2] - (Wbi - W / 2) / Mathf.Tan(A));
         zGrid.Add(Lbi + Lex + z0+ (Wbi - W / 2) / Mathf.Tan(A1));
 
+
+        // Possible uv coordinate
+        xUV.Add(0);
+        xUV.Add(1f/6f);
+        xUV.Add(2f / 6f);
+        xUV.Add(3f / 6f);
+        xUV.Add(4f / 6f);
+        xUV.Add(5f / 6f);
+        xUV.Add(1);
+
+        yUV.Add(0);
+        yUV.Add(1f / 5f);
+        yUV.Add(2f / 5f);
+        yUV.Add(3f / 5f);
+        yUV.Add(4f / 5f);
+        yUV.Add(1);
+        yUV.Add(3f / 10f);
+        yUV.Add(7f / 10f);
+        yUV.Add(1f / 3f);
+        yUV.Add(1f / 3f);
+
+
+
+        // ---- Creation of all the vertices
         newVertices.Add(new Vector3(xGrid[4], yGrid[0], zGrid[0]));
         newVertices.Add(new Vector3(xGrid[4], yGrid[0], zGrid[1]));
         newVertices.Add(new Vector3(xGrid[2], yGrid[0], zGrid[1]));
@@ -291,6 +352,62 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         newVertices.Add(new Vector3(xGrid[2], yGrid[1], zGrid[7]));
         newVertices.Add(new Vector3(xGrid[2], yGrid[1], zGrid[6]));
 
+        verticesUV.Add(new Vector2(xUV[1], yUV[0]));
+        verticesUV.Add(new Vector2(xUV[1], yUV[1]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[1]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[0]));
+
+        verticesUV.Add(new Vector2(xUV[2], yUV[6]));
+
+
+        verticesUV.Add(new Vector2(xUV[1], yUV[2]));
+        verticesUV.Add(new Vector2(xUV[1], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[2]));
+
+        verticesUV.Add(new Vector2(xUV[2], yUV[2]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[2]));
+
+        verticesUV.Add(new Vector2(xUV[2], yUV[7]));
+
+        verticesUV.Add(new Vector2(xUV[1], yUV[4]));
+        verticesUV.Add(new Vector2(xUV[1], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[4]));
+
+
+        verticesUV.Add(new Vector2(xUV[0], yUV[0]));
+        verticesUV.Add(new Vector2(xUV[0], yUV[1]));
+        verticesUV.Add(new Vector2(xUV[4], yUV[1]));
+        verticesUV.Add(new Vector2(xUV[4], yUV[0]));
+
+        verticesUV.Add(new Vector2(xUV[5], yUV[5]));
+
+        verticesUV.Add(new Vector2(xUV[0], yUV[2]));
+        verticesUV.Add(new Vector2(xUV[0], yUV[3]));
+
+
+        verticesUV.Add(new Vector2(xUV[5], yUV[9]));
+        verticesUV.Add(new Vector2(xUV[5], yUV[8]));
+
+        verticesUV.Add(new Vector2(xUV[5], yUV[8]));
+        verticesUV.Add(new Vector2(xUV[5], yUV[9]));
+
+
+
+        verticesUV.Add(new Vector2(xUV[4], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[4], yUV[2]));
+
+        verticesUV.Add(new Vector2(xUV[5], yUV[5]));
+
+        verticesUV.Add(new Vector2(xUV[0], yUV[4]));
+        verticesUV.Add(new Vector2(xUV[0], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[4], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[4], yUV[4]));
+        
+        //----- Meshing of the vertices
         //Floor
         quad(0, 1, 2, 3, pos);
         quad(1, 5, 8, 4, pos);
@@ -303,6 +420,7 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         triang(1, 4, 2, pos);
         triang(13, 14, 17, pos);
 
+   
         //Celing
         if (ceiling)
         {
@@ -332,17 +450,31 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         quad2(11, 17, 35, 29, pos);
         quad2(17, 16, 34, 35, pos);
 
+
+        verticesUV[4] = new Vector2(xUV[4], yUV[0]);
+        verticesUV[8] = new Vector2(xUV[4], yUV[8]);
+        verticesUV[9] = new Vector2(xUV[4], yUV[9]);
+        verticesUV[13] = new Vector2(xUV[4], yUV[5]);
+
+        verticesUV[22] = new Vector2(xUV[5], yUV[0]);
+        verticesUV[31] = new Vector2(xUV[5], yUV[5]);
+        
+
+
         //Internal Left Wall
         quad2(9, 4, 22, 27, pos);
         quad2(10, 9, 27, 28, pos);
         quad2(13, 10, 28, 31, pos);
 
+        verticesUV[4] = new Vector2(xUV[6], yUV[0]);
+        verticesUV[8] = new Vector2(xUV[6], yUV[8]);
+        verticesUV[9] = new Vector2(xUV[6], yUV[9]);
+        verticesUV[13] = new Vector2(xUV[6], yUV[5]);
+
         //INternal Right Wall
         quad2(4, 8, 26, 22, pos);
         quad2(8, 7, 25, 26, pos);
         quad2(7, 13, 31, 25, pos);
-
-
 
     }
 }
