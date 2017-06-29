@@ -26,11 +26,12 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
     float A1;
     float Ltot;
     int Nv;
-    
+    public bool ceiling;
     GameObject[] pointLights = new GameObject[8];
     Light[] pointLightsComp = new Light[8];
     // Use this for initialization
     void Start() {
+        ceiling = false;
         Nv = 0;
         mesh = GetComponent<MeshFilter>().mesh;
         A1 = PlayerPrefs.GetFloat("Aco");
@@ -300,16 +301,19 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
 
 
         //Celing
-        quad(18, 21, 20, 19, pos);
-        quad(19, 22, 26, 23, pos);
-        quad(22, 20, 30, 27, pos);
-        quad(23, 26, 25, 24, pos);
-        quad(30, 29, 28, 27, pos);
-        quad(24, 25, 31, 32, pos);
-        quad(28, 29, 35, 31, pos);
-        quad(35, 34, 33, 32, pos);
-        triang(19, 20, 22, pos);
-        triang(31, 35, 32, pos);
+        if (ceiling)
+        {
+            quad(18, 21, 20, 19, pos);
+            quad(19, 22, 26, 23, pos);
+            quad(22, 20, 30, 27, pos);
+            quad(23, 26, 25, 24, pos);
+            quad(30, 29, 28, 27, pos);
+            quad(24, 25, 31, 32, pos);
+            quad(28, 29, 35, 31, pos);
+            quad(35, 34, 33, 32, pos);
+            triang(19, 20, 22, pos);
+            triang(31, 35, 32, pos);
+        }
 
         
 
