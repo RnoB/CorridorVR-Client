@@ -27,11 +27,13 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
     float Ltot;
     int Nv;
     public bool ceiling;
+    public bool light;
     GameObject[] pointLights = new GameObject[8];
     Light[] pointLightsComp = new Light[8];
     // Use this for initialization
     void Start() {
         ceiling = false;
+        light = false;
         Nv = 0;
         mesh = GetComponent<MeshFilter>().mesh;
         A1 = PlayerPrefs.GetFloat("Aco");
@@ -65,40 +67,43 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         mesh.Clear();
         mesh.vertices = newVertices.ToArray();
         mesh.triangles = newTriangles.ToArray();
-        ;
+        
         mesh.RecalculateNormals();
 
         GetComponent<MeshCollider>().sharedMesh=mesh;
-        for (int k=0;k<pointLights.Length;k++)
+        if (light)
         {
-            pointLights[k]=new GameObject();
-            pointLightsComp[k] = pointLights[k].AddComponent<Light>();
-            pointLightsComp[k].type = LightType.Point;
-
-            if (k%3==2)
+            for (int k = 0; k < pointLights.Length; k++)
             {
-                pointLightsComp[k].range = Ltot / 2;
-                pointLightsComp[k].intensity = 1f;
-            }
-            else if (k%3==1)
-            {
-                pointLightsComp[k].range = Ltot / 5;
-                pointLightsComp[k].color = new Color(0, 255,0);
-                pointLights[k].AddComponent<lightColorTrail>();
-                pointLights[k].GetComponent<lightColorTrail>().left = true;
-                pointLightsComp[k].intensity = 8f;  
-            }
-            else
-            {
+                pointLights[k] = new GameObject();
+                pointLightsComp[k] = pointLights[k].AddComponent<Light>();
+                pointLightsComp[k].type = LightType.Point;
 
-                pointLightsComp[k].range = Ltot / 5;
-                pointLightsComp[k].color = new Color(255,0, 0);
-                pointLights[k].AddComponent<lightColorTrail>();
-                pointLights[k].GetComponent<lightColorTrail>().left = false;
-                pointLightsComp[k].intensity = 8f;
+                if (k % 3 == 2)
+                {
+                    pointLightsComp[k].range = Ltot / 2;
+                    pointLightsComp[k].intensity = 1f;
+                }
+                else if (k % 3 == 1)
+                {
+                    pointLightsComp[k].range = Ltot / 5;
+                    pointLightsComp[k].color = new Color(0, 255, 0);
+                    pointLights[k].AddComponent<lightColorTrail>();
+                    pointLights[k].GetComponent<lightColorTrail>().left = true;
+                    pointLightsComp[k].intensity = 8f;
+                }
+                else
+                {
+
+                    pointLightsComp[k].range = Ltot / 5;
+                    pointLightsComp[k].color = new Color(255, 0, 0);
+                    pointLights[k].AddComponent<lightColorTrail>();
+                    pointLights[k].GetComponent<lightColorTrail>().left = false;
+                    pointLightsComp[k].intensity = 8f;
+                }
+
+
             }
-
-
         }
         int j = -1;
         float wa = Ltot / 4;
@@ -298,8 +303,6 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         triang(1, 4, 2, pos);
         triang(13, 14, 17, pos);
 
-
-
         //Celing
         if (ceiling)
         {
@@ -314,11 +317,7 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
             triang(19, 20, 22, pos);
             triang(31, 35, 32, pos);
         }
-
-        
-
-        
-
+    
         //External Left Wall
         quad2(1, 0, 18, 19, pos);
         quad2(5, 1, 19, 23, pos);
