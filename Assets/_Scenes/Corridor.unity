@@ -229,7 +229,7 @@ MonoBehaviour:
   removePlayer: 
   nPlayers: 0
   nameClient: bbo
-  host: 169.254.217.95
+  host: 192.168.0.103
   port: 4954
 --- !u!4 &2008245976
 Transform:
