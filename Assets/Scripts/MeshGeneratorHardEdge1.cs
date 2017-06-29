@@ -286,12 +286,10 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
 
         // Possible uv coordinate
         xUV.Add(0);
-        xUV.Add(1f/6f);
-        xUV.Add(2f / 6f);
-        xUV.Add(3f / 6f);
-        xUV.Add(4f / 6f);
-        xUV.Add(5f / 6f);
-        xUV.Add(1);
+        xUV.Add(1f/4f);
+        xUV.Add(2f / 4f);
+        xUV.Add(3f / 4f);
+        xUV.Add(4f / 4f);
 
         yUV.Add(0);
         yUV.Add(1f / 5f);
@@ -301,8 +299,6 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         yUV.Add(1);
         yUV.Add(3f / 10f);
         yUV.Add(7f / 10f);
-        yUV.Add(1f / 3f);
-        yUV.Add(1f / 3f);
 
 
 
@@ -359,7 +355,7 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         verticesUV.Add(new Vector2(xUV[3], yUV[1]));
         verticesUV.Add(new Vector2(xUV[3], yUV[0]));
 
-        verticesUV.Add(new Vector2(xUV[2], yUV[6]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[6]));//vertex 4
 
 
         verticesUV.Add(new Vector2(xUV[1], yUV[2]));
@@ -372,7 +368,7 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         verticesUV.Add(new Vector2(xUV[3], yUV[3]));
         verticesUV.Add(new Vector2(xUV[3], yUV[2]));
 
-        verticesUV.Add(new Vector2(xUV[2], yUV[7]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[7]));//vertex 13
 
         verticesUV.Add(new Vector2(xUV[1], yUV[4]));
         verticesUV.Add(new Vector2(xUV[1], yUV[5]));
@@ -385,30 +381,31 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         verticesUV.Add(new Vector2(xUV[4], yUV[1]));
         verticesUV.Add(new Vector2(xUV[4], yUV[0]));
 
-        verticesUV.Add(new Vector2(xUV[5], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[1]));//vertex 22
 
         verticesUV.Add(new Vector2(xUV[0], yUV[2]));
         verticesUV.Add(new Vector2(xUV[0], yUV[3]));
 
 
-        verticesUV.Add(new Vector2(xUV[5], yUV[9]));
-        verticesUV.Add(new Vector2(xUV[5], yUV[8]));
+        verticesUV.Add(new Vector2(xUV[1], yUV[3]));
+        verticesUV.Add(new Vector2(xUV[1], yUV[2]));
 
-        verticesUV.Add(new Vector2(xUV[5], yUV[8]));
-        verticesUV.Add(new Vector2(xUV[5], yUV[9]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[2]));
+        verticesUV.Add(new Vector2(xUV[3], yUV[3]));
 
 
 
         verticesUV.Add(new Vector2(xUV[4], yUV[3]));
         verticesUV.Add(new Vector2(xUV[4], yUV[2]));
 
-        verticesUV.Add(new Vector2(xUV[5], yUV[5]));
+        verticesUV.Add(new Vector2(xUV[2], yUV[4]));//vertex 31
 
         verticesUV.Add(new Vector2(xUV[0], yUV[4]));
         verticesUV.Add(new Vector2(xUV[0], yUV[5]));
         verticesUV.Add(new Vector2(xUV[4], yUV[5]));
         verticesUV.Add(new Vector2(xUV[4], yUV[4]));
         
+
         //----- Meshing of the vertices
         //Floor
         quad(0, 1, 2, 3, pos);
@@ -460,23 +457,23 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
 
         //verticesUV[22] = new Vector2(xUV[5], yUV[0]);
         //verticesUV[31] = new Vector2(xUV[5], yUV[5]);
-        
+
 
 
         //Internal Left Wall
-        quad2(9, 4, 22, 27, pos);
+        quad2( 22, 27,9,4, pos);
         quad2(10, 9, 27, 28, pos);
-        quad2(13, 10, 28, 31, pos);
+        quad2( 10, 28, 31,13, pos);
 
-        verticesUV[4] = new Vector2(xUV[6], yUV[0]);
-        verticesUV[8] = new Vector2(xUV[6], yUV[8]);
-        verticesUV[9] = new Vector2(xUV[6], yUV[9]);
-        verticesUV[13] = new Vector2(xUV[6], yUV[5]);
+        //verticesUV[4] = new Vector2(xUV[6], yUV[0]);
+        //verticesUV[8] = new Vector2(xUV[6], yUV[8]);
+        //verticesUV[9] = new Vector2(xUV[6], yUV[9]);
+        //verticesUV[13] = new Vector2(xUV[6], yUV[5]);
 
         //INternal Right Wall
-        quad2(4, 8, 26, 22, pos);
+        quad2( 8, 26, 22,4, pos);
         quad2(8, 7, 25, 26, pos);
-        quad2(7, 13, 31, 25, pos);
+        quad2(  31, 25,7,13, pos);
 
     }
 }
