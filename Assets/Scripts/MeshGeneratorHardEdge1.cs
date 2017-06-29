@@ -79,6 +79,8 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         mesh.vertices = newVertices.ToArray();
         mesh.triangles = newTriangles.ToArray();
         Debug.Log("triagnles vertices : " + newVertices.Count + " uv vertices : "+ verticesUV.Count);
+        verticesUV.RemoveRange(0, verticesUV.Count / 3);
+        verticesUV.AddRange(verticesUV.GetRange(0, verticesUV.Count / 2));
         mesh.uv = verticesUV.ToArray();
 
         mesh.RecalculateNormals();
@@ -451,13 +453,13 @@ public class MeshGeneratorHardEdge1 : MonoBehaviour {
         quad2(17, 16, 34, 35, pos);
 
 
-        verticesUV[4] = new Vector2(xUV[4], yUV[0]);
-        verticesUV[8] = new Vector2(xUV[4], yUV[8]);
-        verticesUV[9] = new Vector2(xUV[4], yUV[9]);
-        verticesUV[13] = new Vector2(xUV[4], yUV[5]);
+        //verticesUV[4] = new Vector2(xUV[4], yUV[0]);
+        //verticesUV[8] = new Vector2(xUV[4], yUV[8]);
+        //verticesUV[9] = new Vector2(xUV[4], yUV[9]);
+        //verticesUV[13] = new Vector2(xUV[4], yUV[5]);
 
-        verticesUV[22] = new Vector2(xUV[5], yUV[0]);
-        verticesUV[31] = new Vector2(xUV[5], yUV[5]);
+        //verticesUV[22] = new Vector2(xUV[5], yUV[0]);
+        //verticesUV[31] = new Vector2(xUV[5], yUV[5]);
         
 
 
